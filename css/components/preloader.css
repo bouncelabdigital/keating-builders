@@ -1,0 +1,508 @@
+/* ============================================================
+   KEATING BUILDERS — PRELOADER
+   Animation sequence (~3.8s total):
+   0.0s  Dark screen
+   0.1s  House fades + scales in
+   0.9s  Logo fades up
+   1.8s  Zoom begins (slow rush toward door)
+   2.4s  Door swings open
+   2.7s  Zoom accelerates through the door
+   3.3s  Cream flash fills screen
+   3.6s  Preloader fades out
+   3.9s  Hero content animates in
+   ============================================================ */
+
+/* ─── Preloader Wrapper ─── */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: var(--color-dark);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  animation: preloaderExit 0.7s 3.55s ease-out forwards;
+}
+
+@keyframes preloaderExit {
+  0%   { opacity: 1; pointer-events: all; }
+  100% { opacity: 0; pointer-events: none; }
+}
+
+/* ─── Scene — everything that zooms ─── */
+.preloader__scene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  animation:
+    sceneAppear 0.6s 0.1s ease-out both,
+    sceneZoom   2.0s 1.8s cubic-bezier(0.4, 0, 1, 1) forwards;
+  transform-origin: center 38%; /* zoom origin: the door */
+}
+
+@keyframes sceneAppear {
+  from { opacity: 0; transform: scale(0.88); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes sceneZoom {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(3.5); }  /* door visible, swinging open */
+  100% { transform: scale(32); }   /* door fills screen */
+}
+
+/* ─── House ─── */
+.preloader__house {
+  position: relative;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ─── Chimney ─── */
+.preloader__chimney {
+  position: absolute;
+  top: 18px;
+  left: 52px;
+  width: 30px;
+  height: 52px;
+  background: #0f1009;
+  border-radius: 2px;
+  z-index: 2;
+  box-shadow: inset 2px 0 0 rgba(167,162,132,0.15);
+}
+
+.preloader__chimney::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: -4px;
+  right: -4px;
+  height: 6px;
+  background: #a7a284;
+  opacity: 0.5;
+  border-radius: 2px;
+}
+
+/* ─── Roof ─── */
+.preloader__roof {
+  width: 300px;
+  height: 110px;
+  background: #0f1009;
+  clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+  position: relative;
+  z-index: 1;
+}
+
+/* Subtle ridge lines */
+.preloader__roof::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 14px,
+    rgba(167,162,132,0.04) 14px,
+    rgba(167,162,132,0.04) 15px
+  );
+}
+
+/* Fascia board */
+.preloader__fascia {
+  width: 276px;
+  height: 7px;
+  background: #a7a284;
+  opacity: 0.55;
+  border-radius: 1px;
+  margin-top: -1px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ─── House Body (facade) ─── */
+.preloader__facade {
+  width: 260px;
+  height: 155px;
+  background: #efede7;
+  position: relative;
+  z-index: 1;
+  overflow: visible;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px 22px 0;
+}
+
+/* Subtle siding lines */
+.preloader__facade::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    180deg,
+    transparent,
+    transparent 11px,
+    rgba(167,162,132,0.12) 11px,
+    rgba(167,162,132,0.12) 12px
+  );
+  pointer-events: none;
+}
+
+/* ─── Windows ─── */
+.preloader__window {
+  width: 54px;
+  height: 58px;
+  background: rgba(16,57,0,0.18);
+  border: 2px solid #a7a284;
+  border-radius: 2px;
+  position: relative;
+  flex-shrink: 0;
+  box-shadow: inset 0 2px 8px rgba(16,57,0,0.3), 0 1px 0 rgba(255,255,255,0.5);
+}
+
+/* Vertical divider */
+.preloader__window::before {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 50%;
+  width: 2px;
+  background: #a7a284;
+  transform: translateX(-50%);
+}
+
+/* Horizontal divider */
+.preloader__window::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: 50%;
+  height: 2px;
+  background: #a7a284;
+  transform: translateY(-50%);
+}
+
+/* Window sill */
+.preloader__window-sill {
+  position: absolute;
+  bottom: -5px;
+  left: -4px;
+  right: -4px;
+  height: 5px;
+  background: #a7a284;
+  opacity: 0.7;
+  border-radius: 1px;
+}
+
+/* ─── Door System ─── */
+.preloader__door-wrap {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 110px;
+}
+
+/* Door frame (dark surround) */
+.preloader__door-frame {
+  position: absolute;
+  inset: 0;
+  background: #0a2400;
+  border-radius: 3px 3px 0 0;
+  /* 3D perspective context for the door swing */
+  perspective: 220px;
+  perspective-origin: 0% 50%;
+}
+
+/* Arch above door */
+.preloader__door-frame::before {
+  content: '';
+  position: absolute;
+  top: -14px;
+  left: -3px;
+  right: -3px;
+  height: 18px;
+  background: #a7a284;
+  opacity: 0.6;
+  border-radius: 30px 30px 0 0;
+}
+
+/* Light that glows behind the door (reveals as door opens) */
+.preloader__door-light {
+  position: absolute;
+  inset: 2px 2px 0;
+  background: linear-gradient(180deg, #efede7 0%, #e0ddd5 100%);
+  border-radius: 2px 2px 0 0;
+  opacity: 0;
+  animation: doorLightReveal 0.4s 2.35s ease-out forwards;
+}
+
+@keyframes doorLightReveal {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* The door panel — this swings open */
+.preloader__door-panel {
+  position: absolute;
+  inset: 2px 2px 0;
+  background: #103900;
+  border-radius: 2px 2px 0 0;
+  transform-origin: left center;
+  transform: rotateY(0deg);
+  animation: doorSwing 0.55s 2.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  backface-visibility: hidden;
+}
+
+@keyframes doorSwing {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(-82deg); }
+}
+
+/* Raised panels on door */
+.preloader__door-panel::before {
+  content: '';
+  position: absolute;
+  top: 28px;
+  left: 6px; right: 6px;
+  height: 28px;
+  border: 1.5px solid rgba(239,237,231,0.12);
+  border-radius: 1px;
+}
+
+.preloader__door-panel::after {
+  content: '';
+  position: absolute;
+  top: 62px;
+  left: 6px; right: 6px;
+  bottom: 8px;
+  border: 1.5px solid rgba(239,237,231,0.12);
+  border-radius: 1px;
+}
+
+/* Transom window above door */
+.preloader__door-transom {
+  position: absolute;
+  top: 5px;
+  left: 8px; right: 8px;
+  height: 18px;
+  background: rgba(239,237,231,0.12);
+  border: 1px solid rgba(239,237,231,0.15);
+  border-radius: 1px;
+}
+
+/* Door knob */
+.preloader__door-knob {
+  position: absolute;
+  right: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 7px;
+  height: 7px;
+  background: #a7a284;
+  border-radius: 50%;
+  z-index: 10;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}
+
+/* ─── Front Steps ─── */
+.preloader__steps {
+  width: 260px;
+  position: relative;
+}
+
+.preloader__step {
+  background: #c8c5ad;
+  border-radius: 1px;
+  margin: 0 auto;
+}
+
+.preloader__step:nth-child(1) {
+  width: 100px;
+  height: 7px;
+}
+
+.preloader__step:nth-child(2) {
+  width: 88px;
+  height: 5px;
+  margin-top: 0;
+  opacity: 0.7;
+}
+
+/* ─── Ground Line ─── */
+.preloader__ground {
+  width: 260px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #a7a284, transparent);
+  opacity: 0.3;
+  margin-top: 2px;
+}
+
+/* ─── Logo ─── */
+.preloader__logo {
+  opacity: 0;
+  animation: logoFadeUp 0.7s 0.9s ease-out forwards;
+}
+
+@keyframes logoFadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.preloader__logo img {
+  width: 420px;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 480px) {
+  .preloader__logo img {
+    width: 300px;
+  }
+}
+
+/* ─── Cream Flash (end of zoom) ─── */
+.preloader__flash {
+  position: absolute;
+  inset: 0;
+  background: #efede7;
+  opacity: 0;
+  pointer-events: none;
+  animation: flashBurst 0.55s 3.2s ease-out forwards;
+}
+
+@keyframes flashBurst {
+  0%   { opacity: 0; }
+  30%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ─── Smoke Puffs ─── */
+
+/* Each puff rises from the chimney cap, expands, drifts, and fades */
+@keyframes smokeDrift1 {
+  0%   { transform: translateY(0)    translateX(0)    scale(0.2)  rotate(0deg);   opacity: 0;    filter: blur(2px); }
+  10%  { opacity: 0.55; }
+  100% { transform: translateY(-78px) translateX(11px)  scale(3.0)  rotate(28deg);  opacity: 0;    filter: blur(7px); }
+}
+@keyframes smokeDrift2 {
+  0%   { transform: translateY(0)    translateX(0)    scale(0.25) rotate(0deg);   opacity: 0;    filter: blur(2px); }
+  12%  { opacity: 0.45; }
+  100% { transform: translateY(-65px) translateX(-9px)  scale(2.5)  rotate(-22deg); opacity: 0;    filter: blur(6px); }
+}
+@keyframes smokeDrift3 {
+  0%   { transform: translateY(0)    translateX(0)    scale(0.18) rotate(0deg);   opacity: 0;    filter: blur(3px); }
+  10%  { opacity: 0.5; }
+  100% { transform: translateY(-88px) translateX(16px)  scale(3.4)  rotate(42deg);  opacity: 0;    filter: blur(8px); }
+}
+@keyframes smokeDrift4 {
+  0%   { transform: translateY(0)    translateX(0)    scale(0.3)  rotate(0deg);   opacity: 0;    filter: blur(2px); }
+  14%  { opacity: 0.38; }
+  100% { transform: translateY(-58px) translateX(-6px)  scale(2.1)  rotate(-14deg); opacity: 0;    filter: blur(5px); }
+}
+
+/* Base smoke style */
+.preloader__smoke {
+  position: absolute;
+  pointer-events: none;
+  background: rgba(200, 197, 182, 0.55);
+}
+
+/* Puff 1 — primary, drifts right */
+.preloader__smoke:nth-child(1) {
+  top: 10px;
+  left: 57px;
+  width: 20px;
+  height: 17px;
+  border-radius: 42% 58% 54% 46% / 58% 38% 62% 42%;
+  animation: smokeDrift1 2.3s 0.45s ease-out infinite;
+}
+
+/* Puff 2 — drifts left, slightly smaller */
+.preloader__smoke:nth-child(2) {
+  top: 12px;
+  left: 62px;
+  width: 16px;
+  height: 14px;
+  border-radius: 56% 44% 38% 62% / 44% 62% 38% 56%;
+  animation: smokeDrift2 2.0s 1.05s ease-out infinite;
+}
+
+/* Puff 3 — tallest rise, drifts right */
+.preloader__smoke:nth-child(3) {
+  top: 11px;
+  left: 59px;
+  width: 22px;
+  height: 18px;
+  border-radius: 38% 62% 58% 42% / 52% 42% 58% 48%;
+  animation: smokeDrift3 2.6s 1.65s ease-out infinite;
+}
+
+/* Puff 4 — compact, quick, drifts left */
+.preloader__smoke:nth-child(4) {
+  top: 13px;
+  left: 64px;
+  width: 14px;
+  height: 12px;
+  border-radius: 62% 38% 46% 54% / 40% 58% 42% 60%;
+  animation: smokeDrift4 1.85s 2.25s ease-out infinite;
+}
+
+
+/* ═══════════════════════════════════════════
+   HERO ENTRANCE — fires after preloader exits
+   Body gets .preloader-done class via JS
+   ═══════════════════════════════════════════ */
+
+/* Before preloader exits: hero content invisible */
+body:not(.preloader-done) .hero__eyebrow,
+body:not(.preloader-done) .hero__headline,
+body:not(.preloader-done) .hero__sub,
+body:not(.preloader-done) .hero__actions,
+body:not(.preloader-done) .hero__scroll,
+body:not(.preloader-done) .hero__card-stack {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+/* Staggered entrance once preloader-done is added */
+body.preloader-done .hero__eyebrow {
+  animation: heroItemIn 0.7s 0.0s var(--ease-out-expo) both;
+}
+
+body.preloader-done .hero__headline {
+  animation: heroItemIn 0.9s 0.12s var(--ease-out-expo) both;
+}
+
+body.preloader-done .hero__sub {
+  animation: heroItemIn 0.8s 0.28s var(--ease-out-expo) both;
+}
+
+body.preloader-done .hero__actions {
+  animation: heroItemIn 0.8s 0.42s var(--ease-out-expo) both;
+}
+
+body.preloader-done .hero__scroll {
+  animation: heroItemIn 0.7s 0.65s var(--ease-out-expo) both;
+}
+
+body.preloader-done .hero__card-stack {
+  animation: heroCardIn 0.9s 0.3s var(--ease-out-expo) both;
+}
+
+@keyframes heroItemIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes heroCardIn {
+  from { opacity: 0; transform: translateX(32px) scale(0.96); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
