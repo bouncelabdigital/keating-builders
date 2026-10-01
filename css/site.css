@@ -175,66 +175,116 @@ a { color: inherit; }
 .nav-lock { overflow: hidden; }
 .nav-lock .site-header { position: fixed; top: 0; left: 0; right: 0; }
 .mobile-nav {
-  position: fixed; inset: 0; z-index: 15;
+  position: fixed; inset: 0 0 auto 0; z-index: 15;
+  height: 100vh;
+  height: 100dvh; /* dynamic viewport: excludes the mobile browser's URL bar */
   display: none;
   overflow-y: auto; overscroll-behavior: contain;
-  padding: calc(var(--header-h) + 1.75rem) var(--gutter) 2.5rem;
+  padding: calc(var(--header-h) + 1rem) var(--gutter) calc(.75rem + env(safe-area-inset-bottom));
   color: var(--color-cream);
   background: var(--grain-light) var(--color-olive);
   clip-path: inset(0 0 100% 0);
   transition: clip-path .5s var(--ease);
 }
 .mobile-nav.is-open { clip-path: inset(0 0 0 0); }
-.mobile-nav__inner { display: flex; flex-direction: column; gap: 2.5rem; min-height: 100%; max-width: 36rem; }
+.mobile-nav__inner { display: flex; flex-direction: column; gap: 1.25rem; min-height: 100%; max-width: 36rem; }
 .mobile-nav a { text-decoration: none; }
 
 /* Primary links: torn scraps of the same fibrous paper as the hero collage */
-.mobile-nav__primary { list-style: none; padding: 0; display: grid; gap: .8rem; }
-.mobile-nav__primary li { position: relative; filter: drop-shadow(0 6px 8px rgba(0,0,0,.22)); }
-/* lighter fibrous rim peeking past the tear, like the paper edges in the hero collage */
-.mobile-nav__primary li::before {
-  content: ''; position: absolute; inset: -2px -3px -3px -2px; z-index: -1;
-  background: #f5f2ea;
-  clip-path: polygon(0 4%, 9% 0, 21% 5%, 33% 1%, 47% 6%, 60% 0, 73% 4%, 86% 0, 100% 5%, 100% 52%, 99% 100%, 85% 96%, 71% 100%, 57% 95%, 43% 99%, 29% 94%, 15% 100%, 0 97%, 1% 48%);
-  transform: rotate(-.9deg);
-}
-.mobile-nav__primary li:nth-child(even)::before { transform: rotate(.8deg); }
+.mobile-nav__primary { list-style: none; padding: 0; display: grid; gap: .5rem; }
+.mobile-nav__primary li { filter: drop-shadow(0 5px 7px rgba(0,0,0,.2)); }
 .mobile-nav__primary li:nth-child(odd)  { margin-right: .6rem; }
 .mobile-nav__primary li:nth-child(even) { margin-left: .6rem; }
 .mobile-nav__primary a {
   display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 1rem;
-  padding: 1.05rem 1.35rem 1.15rem;
+  padding: .75rem 1.25rem .85rem;
   color: var(--color-dark);
   background: var(--color-scrap) url('/images/graphics/fibrous-paper.jpg') 0 0 / 256px;
   background-image: image-set(url('/images/graphics/fibrous-paper.avif') type('image/avif'), url('/images/graphics/fibrous-paper.jpg') type('image/jpeg'));
-  clip-path: polygon(0 8%, 6% 2%, 14% 6%, 25% 0, 38% 5%, 52% 1%, 66% 6%, 79% 0, 91% 5%, 100% 1%, 99% 50%, 100% 96%, 88% 100%, 74% 94%, 60% 99%, 45% 95%, 31% 100%, 17% 94%, 5% 99%, 0 93%, 1% 50%);
+  clip-path: polygon(0% 1.9%, 2.5% 1.4%, 5% 1.5%, 7.5% 0.8%, 10% 0.1%, 12.5% 1.0%, 15% 1.3%, 17.5% 1.7%, 20% 2.0%, 22.5% 0.8%, 25% 0.5%, 27.5% 0.7%, 30% 0.6%, 32.5% 1.7%, 35% 1.7%, 37.5% 1.1%, 40% 1.3%, 42.5% 0.6%, 45% 0.5%, 47.5% 1.2%, 50% 0.9%, 52.5% 1.6%, 55% 1.8%, 57.5% 0.9%, 60% 1.0%, 62.5% 0.4%, 65% 0.4%, 67.5% 1.7%, 70% 1.6%, 72.5% 1.6%, 75% 1.3%, 77.5% 0.1%, 80% 0.6%, 82.5% 1.1%, 85% 1.2%, 87.5% 2.0%, 90% 1.3%, 92.5% 0.8%, 95% 1.0%, 97.5% 0.4%, 100% 0.9%, 99.6% 50%, 100% 98.4%, 97.5% 98.5%, 95% 99.4%, 92.5% 99.1%, 90% 99.5%, 87.5% 99.2%, 85% 98.1%, 82.5% 98.4%, 80% 98.6%, 77.5% 99.0%, 75% 100.0%, 72.5% 99.3%, 70% 98.6%, 67.5% 98.5%, 65% 98.0%, 62.5% 98.9%, 60% 99.5%, 57.5% 99.1%, 55% 99.4%, 52.5% 98.8%, 50% 98.3%, 47.5% 98.8%, 45% 98.5%, 42.5% 99.0%, 40% 99.7%, 37.5% 99.1%, 35% 99.1%, 32.5% 98.6%, 30% 97.9%, 27.5% 98.8%, 25% 99.2%, 22.5% 99.5%, 20% 99.8%, 17.5% 98.5%, 15% 98.2%, 12.5% 98.5%, 10% 98.5%, 7.5% 99.6%, 5% 99.6%, 2.5% 98.9%, 0% 99.0%, 0.4% 50%);
   transform: rotate(-.9deg);
   transition: background-color .25s ease;
 }
 .mobile-nav__primary li:nth-child(even) a {
-  clip-path: polygon(0 2%, 11% 6%, 23% 1%, 35% 5%, 49% 0, 63% 4%, 77% 1%, 89% 6%, 100% 3%, 100% 48%, 99% 98%, 84% 94%, 70% 100%, 56% 96%, 42% 100%, 28% 95%, 14% 99%, 0 96%, 1% 52%);
+  clip-path: polygon(0% 0.7%, 2.5% 0.4%, 5% 0.6%, 7.5% 1.9%, 10% 1.7%, 12.5% 1.4%, 15% 1.2%, 17.5% 0.2%, 20% 0.7%, 22.5% 1.2%, 25% 1.1%, 27.5% 1.8%, 30% 1.4%, 32.5% 0.9%, 35% 1.1%, 37.5% 0.4%, 40% 0.7%, 42.5% 1.5%, 45% 1.4%, 47.5% 1.8%, 50% 1.3%, 52.5% 0.2%, 55% 0.6%, 57.5% 0.8%, 60% 1.3%, 62.5% 2.2%, 65% 1.3%, 67.5% 0.9%, 70% 0.7%, 72.5% 0.3%, 75% 1.3%, 77.5% 1.6%, 80% 1.3%, 82.5% 1.7%, 85% 0.9%, 87.5% 0.6%, 90% 1.0%, 92.5% 0.6%, 95% 1.3%, 97.5% 1.9%, 100% 1.3%, 99.6% 50%, 100% 98.1%, 97.5% 98.9%, 95% 98.9%, 92.5% 99.2%, 90% 99.8%, 87.5% 98.9%, 85% 98.5%, 82.5% 98.4%, 80% 98.1%, 77.5% 99.3%, 75% 99.7%, 72.5% 99.2%, 70% 99.2%, 67.5% 98.2%, 65% 98.1%, 62.5% 99.0%, 60% 99.0%, 57.5% 99.5%, 55% 99.4%, 52.5% 98.5%, 50% 98.8%, 47.5% 98.5%, 45% 98.4%, 42.5% 99.3%, 40% 99.2%, 37.5% 99.3%, 35% 99.4%, 32.5% 98.2%, 30% 98.3%, 27.5% 98.6%, 25% 98.8%, 22.5% 99.9%, 20% 99.5%, 17.5% 98.7%, 15% 98.6%, 12.5% 98.0%, 10% 98.7%, 7.5% 99.6%, 5% 99.2%, 2.5% 99.4%, 0% 98.9%, 0.4% 50%);
   transform: rotate(.8deg);
 }
 .mobile-nav__primary li:nth-child(3) a { transform: rotate(-.4deg); }
 .mobile-nav__primary a:hover { filter: brightness(1.04); }
+/* Optional lighter torn rim behind each scrap (echoes the collage's paper edges). Off by default;
+   enable by adding .mobile-nav--rim to #mobile-nav. */
+.mobile-nav--rim .mobile-nav__primary li { position: relative; }
+.mobile-nav--rim .mobile-nav__primary li::before {
+  content: ''; position: absolute; inset: -2px -2px -3px -2px; z-index: -1;
+  background: #f3efe6;
+  clip-path: polygon(0% 2.6%, 2.5% 2.6%, 5% 1.3%, 7.5% 1.3%, 10% 0.4%, 12.5% 0.9%, 15% 2.6%, 17.5% 2.3%, 20% 2.3%, 22.5% 1.7%, 25% 0.2%, 27.5% 1.1%, 30% 1.6%, 32.5% 1.8%, 35% 2.8%, 37.5% 1.8%, 40% 1.3%, 42.5% 1.5%, 45% 0.6%, 47.5% 1.4%, 50% 2.1%, 52.5% 1.9%, 55% 2.7%, 57.5% 1.7%, 60% 0.5%, 62.5% 1.1%, 65% 0.8%, 67.5% 2.0%, 70% 3.1%, 72.5% 1.9%, 75% 1.5%, 77.5% 0.8%, 80% 0.3%, 82.5% 2.0%, 85% 2.2%, 87.5% 2.1%, 90% 2.4%, 92.5% 1.0%, 95% 1.0%, 97.5% 1.4%, 100% 0.9%, 99.6% 50%, 100% 98.7%, 97.5% 97.9%, 95% 98.0%, 92.5% 97.2%, 90% 98.5%, 87.5% 99.6%, 85% 99.0%, 82.5% 99.1%, 80% 97.7%, 77.5% 96.9%, 75% 98.3%, 72.5% 98.5%, 70% 99.2%, 67.5% 99.5%, 65% 98.0%, 62.5% 98.0%, 60% 97.9%, 57.5% 97.6%, 55% 98.9%, 52.5% 98.9%, 50% 98.8%, 47.5% 99.2%, 45% 97.8%, 42.5% 97.5%, 40% 98.0%, 37.5% 97.9%, 35% 99.5%, 32.5% 99.6%, 30% 98.3%, 27.5% 98.1%, 25% 97.1%, 22.5% 97.6%, 20% 99.3%, 17.5% 99.0%, 15% 99.2%, 12.5% 98.7%, 10% 97.3%, 7.5% 98.0%, 5% 98.2%, 2.5% 98.2%, 0% 99.4%, 0.4% 50%);
+  transform: rotate(-.9deg);
+}
+.mobile-nav--rim .mobile-nav__primary li:nth-child(even)::before { transform: rotate(.8deg); }
+.mobile-nav--rim .mobile-nav__primary li:nth-child(3)::before { transform: rotate(-.4deg); }
 /* clip-path would cut off an outline, so the focus ring goes on the unclipped li */
 .mobile-nav__primary a:focus-visible { outline: none; }
 .mobile-nav__primary li:has(a:focus-visible) { outline: 2px solid var(--color-cream); outline-offset: 5px; }
-.mobile-nav__text { font-size: clamp(1.875rem, 1.4rem + 2.6vw, 2.5rem); line-height: 1.05; letter-spacing: -.03em; }
+.mobile-nav__text { font-size: clamp(1.625rem, 1.2rem + 2vw, 2.125rem); line-height: 1.05; letter-spacing: -.03em; }
 .mobile-nav__primary svg { width: 22px; height: 12px; color: var(--color-olive); transition: transform .3s var(--ease); }
 .mobile-nav__primary a:hover svg, .mobile-nav__primary a:focus-visible svg { transform: translateX(4px); }
 .mobile-nav__primary a[aria-current="page"] .mobile-nav__text { font-style: italic; color: var(--color-olive-text); }
 
-/* Services: small paper slip */
-.mobile-nav__slip { position: relative; align-self: flex-start; padding: 1.5rem 1.5rem 1.25rem; color: var(--color-dark); background: var(--grain-dark) #f5f3ed; transform: rotate(-1.2deg); box-shadow: 4px 5px 0 #cfc5a9, 0 12px 24px -14px rgba(0,0,0,.5); }
-.mobile-nav__slip p { font-size: .625rem; color: var(--color-ink-soft); }
-.mobile-nav__slip ul { list-style: none; padding: 0; margin-top: .75rem; display: grid; grid-template-columns: repeat(2, auto); gap: .45rem 2rem; }
-.mobile-nav__slip a { font-size: 1.125rem; }
-.mobile-nav__slip a:hover { text-decoration: underline; text-underline-offset: 3px; }
-.mobile-nav__slip :focus-visible { outline-color: var(--color-olive); }
+/* Services: level kraft discs with ink-stamped ring, icon and label, 3 over 2 */
+.ink-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+.mobile-nav__slip { text-align: center; }
+.mobile-nav__svc-label { display: flex; align-items: center; justify-content: center; gap: .75rem; font-size: .625rem; color: #c9cbb9; }
+.mobile-nav__svc-label::before, .mobile-nav__svc-label::after { content: ''; width: 1.75rem; height: 1px; background: rgba(239,237,231,.35); }
+.mobile-nav__svc {
+  list-style: none; padding: 0; margin: .8rem auto 0;
+  max-width: calc(3 * 5.5rem + 2 * .9rem); /* always 3 over 2 */
+  display: flex; flex-wrap: wrap; justify-content: center; gap: .55rem .9rem;
+}
+.mobile-nav__svc a {
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  width: 5.5rem; aspect-ratio: 1; border-radius: 50%;
+  background: var(--grain-dark) #d2c4a2;
+  box-shadow: 0 6px 10px -5px rgba(0,0,0,.45);
+  transition: transform .3s var(--ease), background-color .25s ease;
+}
+/* Everything printed on the disc is "ink": olive, multiplied into the kraft, roughened by the #ink SVG filter */
+.mobile-nav__svc a::after { /* stamped seal ring */
+  content: ''; position: absolute; inset: 5px; border-radius: 50%;
+  border: 1.5px solid #3a4530; opacity: .8; mix-blend-mode: multiply; filter: url(#ink);
+}
+.mobile-nav__ink {
+  position: relative; top: -1.5px; /* optical centring: visible ink sits a hair above true centre */
+  display: flex; flex-direction: column; align-items: center; gap: 0;
+  color: #3a4530; opacity: .92; mix-blend-mode: multiply;
+}
+.mobile-nav__ink svg { filter: url(#ink); }
+.mobile-nav__ink span { filter: url(#ink-fine); }
+.mobile-nav__svc a:hover { background-color: #dccfae; transform: translateY(-2px); }
+.mobile-nav__svc a:focus-visible { outline: 2px solid var(--color-cream); outline-offset: 3px; }
+/* Icon + label kept compact so the label sits high enough to clear the inner ring
+   (checked: "Renovations", the longest, keeps ~4px clearance at its corners) */
+.mobile-nav__svc svg { width: 1.7rem; height: 1.7rem; }
+.mobile-nav__svc span { font-size: .6875rem; font-style: italic; line-height: 1.1; letter-spacing: -.02em; }
+@media (max-width: 359px) { .mobile-nav__svc { max-width: calc(3 * 5.5rem + 2 * .6rem); column-gap: .6rem; } }
+/* Short phones (e.g. iPhone SE with Safari bars): compact everything so the menu still fits above the URL bar */
+@media (max-height: 600px) {
+  .mobile-nav { padding-top: calc(var(--header-h) + .75rem); }
+  .mobile-nav__inner { gap: .8rem; }
+  .mobile-nav__primary { gap: .4rem; }
+  .mobile-nav__primary a { padding: .5rem 1.2rem .55rem; }
+  .mobile-nav__text { font-size: 1.5rem; }
+  .mobile-nav__svc { max-width: calc(3 * 5rem + 2 * .9rem); margin-top: .25rem; gap: .4rem .9rem; }
+  .mobile-nav__svc a { width: 5rem; }
+  .mobile-nav__svc svg { width: 1.3rem; height: 1.3rem; }
+  .mobile-nav__svc span { font-size: .6rem; }
+}
 
-.mobile-nav__foot { margin-top: auto; display: grid; gap: 1.5rem; justify-items: start; }
-.mobile-nav__contact { display: grid; gap: .3rem; font-size: 1.125rem; }
+/* bottom padding keeps the button's tilted backing sheet inside the panel (no phantom scroll) */
+.mobile-nav__foot { margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .75rem 1.25rem; padding-bottom: .5rem; }
+.mobile-nav__foot .btn { padding-left: 1.5rem; padding-right: 1.5rem; }
+.mobile-nav__phone { font-size: 1.1875rem; letter-spacing: -.01em; white-space: nowrap; }
+.mobile-nav__phone:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* Staggered entrance for the menu contents */
 .mobile-nav__primary li, .mobile-nav__slip, .mobile-nav__foot { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .6s var(--ease); }
@@ -243,8 +293,7 @@ a { color: inherit; }
 .mobile-nav.is-open .mobile-nav__primary li:nth-child(2) { transition-delay: .18s; }
 .mobile-nav.is-open .mobile-nav__primary li:nth-child(3) { transition-delay: .26s; }
 .mobile-nav.is-open .mobile-nav__primary li:nth-child(4) { transition-delay: .34s; }
-.mobile-nav.is-open .mobile-nav__slip { transition-delay: .42s; transform: rotate(-1.2deg); }
-.mobile-nav__slip { transform: translateY(14px) rotate(-1.2deg); }
+.mobile-nav.is-open .mobile-nav__slip { transition-delay: .42s; }
 .mobile-nav.is-open .mobile-nav__foot { transition-delay: .5s; }
 @media (prefers-reduced-motion: reduce) {
   .mobile-nav, .mobile-nav * , .site-header__toggle-bars > span { transition: none !important; }
