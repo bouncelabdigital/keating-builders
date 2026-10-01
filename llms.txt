@@ -1,0 +1,38 @@
+# Keating Builders
+
+> Keating Builders is a full-service construction company in Berkshire County, Massachusetts, building new homes and delivering kitchen, bathroom, whole-home renovation and addition projects.
+
+## Services
+
+- New home construction
+- Whole-home renovations
+- Kitchen renovations
+- Bathroom remodels
+- Home additions
+
+## Service Area
+
+Berkshire County, Western Massachusetts.
+
+## Contact
+
+- Phone: (413) 555-0100
+- Email: info@keatingbuilders.com
+- Estimates: https://keatingbuilders.com/contact.html
+
+## About
+
+A local, licensed and insured Massachusetts builder that works directly with each client from the first call to the final walkthrough.
+
+## Pages
+
+- [Home](https://keatingbuilders.com/)
+- [About](https://keatingbuilders.com/about.html)
+- [Projects](https://keatingbuilders.com/projects.html)
+- [Contact](https://keatingbuilders.com/contact.html)
+- [New Home Construction](https://keatingbuilders.com/services/new-homes.html)
+- [Whole-Home Renovations](https://keatingbuilders.com/services/renovations.html)
+- [Kitchen Renovations](https://keatingbuilders.com/services/kitchens.html)
+- [Bathroom Remodels](https://keatingbuilders.com/services/baths.html)
+- [Home Additions](https://keatingbuilders.com/services/additions.html)
+- [Privacy Policy](https://keatingbuilders.com/privacy.html)
