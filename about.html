@@ -162,16 +162,36 @@
   </header>
 
   <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile">
-    <ul role="list">
-      <li><a href="/projects.html">Work</a></li>
-      <li><a href="/#approach">Approach</a></li>
-      <li><a href="/about.html" aria-current="page">About</a></li>
-      <li><a href="/contact.html">Contact</a></li>
-    </ul>
-    <a href="/contact.html" class="btn btn--light">
-      Inquire
-      <svg viewBox="0 0 22 12" fill="none" stroke="currentColor" stroke-width="1.25" aria-hidden="true"><path d="M0 6h21M15.5 .5 21 6l-5.5 5.5"/></svg>
-    </a>
+    <div class="mobile-nav__inner">
+      <ul class="mobile-nav__primary" role="list">
+        <li><a href="/projects.html"><span class="label mobile-nav__num">01</span><span class="mobile-nav__text">Work</span><svg viewBox="0 0 22 12" fill="none" stroke="currentColor" stroke-width="1.25" aria-hidden="true"><path d="M0 6h21M15.5 .5 21 6l-5.5 5.5"/></svg></a></li>
+        <li><a href="/#approach"><span class="label mobile-nav__num">02</span><span class="mobile-nav__text">Approach</span><svg viewBox="0 0 22 12" fill="none" stroke="currentColor" stroke-width="1.25" aria-hidden="true"><path d="M0 6h21M15.5 .5 21 6l-5.5 5.5"/></svg></a></li>
+        <li><a href="/about.html" aria-current="page"><span class="label mobile-nav__num">03</span><span class="mobile-nav__text">About</span><svg viewBox="0 0 22 12" fill="none" stroke="currentColor" stroke-width="1.25" aria-hidden="true"><path d="M0 6h21M15.5 .5 21 6l-5.5 5.5"/></svg></a></li>
+        <li><a href="/contact.html"><span class="label mobile-nav__num">04</span><span class="mobile-nav__text">Contact</span><svg viewBox="0 0 22 12" fill="none" stroke="currentColor" stroke-width="1.25" aria-hidden="true"><path d="M0 6h21M15.5 .5 21 6l-5.5 5.5"/></svg></a></li>
+      </ul>
+
+      <div class="mobile-nav__slip">
+        <p class="label">Services</p>
+        <ul role="list">
+          <li><a href="/services/new-homes.html">New Homes</a></li>
+          <li><a href="/services/renovations.html">Renovations</a></li>
+          <li><a href="/services/kitchens.html">Kitchens</a></li>
+          <li><a href="/services/baths.html">Baths</a></li>
+          <li><a href="/services/additions.html">Additions</a></li>
+        </ul>
+      </div>
+
+      <div class="mobile-nav__foot">
+        <a href="/contact.html" class="btn btn--light">
+          Inquire
+          <svg viewBox="0 0 22 12" fill="none" stroke="currentColor" stroke-width="1.25" aria-hidden="true"><path d="M0 6h21M15.5 .5 21 6l-5.5 5.5"/></svg>
+        </a>
+        <p class="mobile-nav__contact">
+          <a href="tel:+14135550100">(413) 555-0100</a>
+          <a href="mailto:info@keatingbuilders.com">info@keatingbuilders.com</a>
+        </p>
+      </div>
+    </div>
   </nav>
 
   <main id="main">
@@ -184,7 +204,7 @@
           </ol>
         </nav>
         <h1 id="hero-heading">
-          <span class="label eyebrow">Family-Owned Home Builders in Berkshire County, MA<span class="sr-only">:</span></span>
+          <span class="label eyebrow">Family-Owned Home Builders <span class="eyebrow__place">in Berkshire County, MA</span><span class="sr-only">:</span></span>
           <span class="display">Built on trust. <em>Backed by experience.</em></span>
         </h1>
         <p class="lede">A family-owned construction company serving Berkshire County, Massachusetts for over 30 years. Quality over quantity, always.</p>
@@ -352,7 +372,12 @@
             Let's build together
             <svg viewBox="0 0 22 12" fill="none" stroke="currentColor" stroke-width="1.25" aria-hidden="true"><path d="M0 6h21M15.5 .5 21 6l-5.5 5.5"/></svg>
           </a>
-          <p class="label band__coords" aria-hidden="true">42.4&deg; N<br>73.2&deg; W</p>
+          <a href="/" class="band__logo" aria-label="Keating Builders home">
+            <picture>
+              <source type="image/avif" srcset="/images/logos/keating-builders-logo-light-325w.avif">
+              <img src="/images/logos/keating-builders-logo-light.png" alt="Keating Builders" width="325" height="150" loading="lazy">
+            </picture>
+          </a>
         </div>
       </div>
 
