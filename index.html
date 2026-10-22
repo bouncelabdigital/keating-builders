@@ -288,7 +288,9 @@
     html.preloading .pl-draw { fill-opacity: 0; stroke-opacity: 1; }
     html.preloading .pl-tag { fill-opacity: 0; }
     .preloader.is-filled .pl-draw { fill-opacity: 1; stroke-opacity: 0; transition: fill-opacity .8s var(--ease), stroke-opacity .8s var(--ease) .25s; }
-    .preloader.is-filled .pl-tag { fill-opacity: 1; transition: fill-opacity .7s var(--ease) .4s; }
+    .preloader.is-filled .pl-tag { fill-opacity: 1; transition: fill-opacity .6s var(--ease) .15s; }
+    /* paint-in: when the script builds the painted copies, the originals never take the fill */
+    #preloader.is-painting .pl-draw { fill-opacity: 0; }
   </style>
 </head>
 
@@ -334,11 +336,58 @@
       (function () {
         if (!document.documentElement.classList.contains('preloading')) return;
         if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        var paths = document.querySelectorAll('#preloader .pl-draw');
+        var pre = document.getElementById('preloader');
+        var svg = pre.querySelector('svg');
+        var NS = 'http://www.w3.org/2000/svg';
+        var paths = pre.querySelectorAll('.pl-draw');
+
+        // Paint-in: the fill is rolled on in horizontal passes (alternating direction, like
+        // painting siding), revealed through a mask of brush strokes with bristly edges.
+        // [x1, y, x2, width] in logo units: 2 passes over the mountain, 2 per wordmark line.
+        var passes = [[95, 26, 365, 64], [365, 74, 95, 64], [-8, 129, 467, 48], [467, 163, -8, 48],
+                      [-8, 212, 467, 44], [467, 244, -8, 44]];
+        var strokes = '';
+        for (var j = 0; j < passes.length; j++) {
+          var q = passes[j];
+          strokes += '<path class="pl-pass" d="M' + q[0] + ' ' + q[1] + 'H' + q[2] + '" stroke-width="' + q[3] + '"/>';
+        }
+        svg.querySelector('defs').insertAdjacentHTML('beforeend',
+          '<filter id="pl-brush" x="-10%" y="-30%" width="120%" height="160%">' +
+            '<feTurbulence type="fractalNoise" baseFrequency=".035 .6" numOctaves="2" seed="7" result="n"/>' +
+            '<feDisplacementMap in="SourceGraphic" in2="n" scale="11" xChannelSelector="R" yChannelSelector="G"/>' +
+          '</filter>' +
+          '<mask id="pl-paint" maskUnits="userSpaceOnUse" x="-20" y="-20" width="510" height="340">' +
+            '<g filter="url(#pl-brush)" fill="none" stroke="#fff">' + strokes + '</g>' +
+          '</mask>');
+
+        // painted copies of the mountain + wordmark (same colours and emboss), under the mask
+        var painted = document.createElementNS(NS, 'g');
+        painted.setAttribute('mask', 'url(#pl-paint)');
+        var mtn = paths[0].cloneNode(false);
+        mtn.removeAttribute('class'); mtn.removeAttribute('stroke');
+        painted.appendChild(mtn);
+        var word = document.createElementNS(NS, 'g');
+        var wg = paths[1].parentNode;
+        word.setAttribute('fill', wg.getAttribute('fill'));
+        word.setAttribute('filter', wg.getAttribute('filter'));
+        var wclone = paths[1].cloneNode(false);
+        wclone.removeAttribute('class');
+        word.appendChild(wclone);
+        painted.appendChild(word);
+        svg.appendChild(painted);
+        pre.classList.add('is-painting');
+
+        // hidden starting state: outlines dashed out, paint passes not yet laid
         for (var i = 0; i < paths.length; i++) {
           var len = paths[i].getTotalLength();
           paths[i].style.strokeDasharray = len;
           paths[i].style.strokeDashoffset = len;
+        }
+        var pp = svg.querySelectorAll('.pl-pass');
+        for (var k = 0; k < pp.length; k++) {
+          var pl = Math.abs(passes[k][2] - passes[k][0]);
+          pp[k].style.strokeDasharray = pl;
+          pp[k].style.strokeDashoffset = pl;
         }
       })();
     </script>
@@ -347,7 +396,7 @@
 
   <header class="site-header">
     <a href="/" class="site-header__logo" aria-label="Keating Builders home">
-      <img src="/images/logos/keating-builders-logo-compact-light-embossed.svg" alt="Keating Builders" width="467" height="267">
+      <img src="/images/logos/keating-builders-logo-compact-light-flat.svg" alt="Keating Builders" width="459" height="259">
     </a>
 
     <nav class="site-nav" aria-label="Primary">
@@ -668,7 +717,7 @@
             <svg viewBox="0 0 22 12" fill="none" stroke="currentColor" stroke-width="1.25" aria-hidden="true"><path d="M0 6h21M15.5 .5 21 6l-5.5 5.5"/></svg>
           </a>
           <a href="/" class="band__logo" aria-label="Keating Builders home">
-            <img src="/images/logos/keating-builders-logo-compact-light-embossed.svg" alt="Keating Builders" width="467" height="267" loading="lazy">
+            <img src="/images/logos/keating-builders-logo-compact-light-flat.svg" alt="Keating Builders" width="459" height="259" loading="lazy">
           </a>
         </div>
       </div>
@@ -686,7 +735,7 @@
       var el = document.getElementById('preloader');
       if (!html.classList.contains('preloading') || !el) return;
       var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var MIN = reduce ? 1000 : 2700, MAX = 4500, done = false;
+      var MIN = reduce ? 1000 : 3000, MAX = 4800, done = false;
       var paths = el.querySelectorAll('.pl-draw');
       if (reduce) {
         el.classList.add('is-filled');
@@ -700,7 +749,16 @@
             }
           });
         });
-        setTimeout(function () { el.classList.add('is-filled'); }, 1500);
+        // roll the paint on: each pass starts as the previous one is a little past halfway
+        var passes = el.querySelectorAll('.pl-pass');
+        Array.prototype.forEach.call(passes, function (p, i) {
+          setTimeout(function () {
+            p.style.transition = 'stroke-dashoffset .38s cubic-bezier(.45, .1, .3, 1)';
+            p.style.strokeDashoffset = '0';
+          }, 1150 + i * 190);
+        });
+        // outlines dissolve into the paint and the tagline appears once the last pass lands
+        setTimeout(function () { el.classList.add('is-filled'); }, 2300);
       }
       function finish() {
         if (done) return;

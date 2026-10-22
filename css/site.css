@@ -25,6 +25,7 @@
   --track-wide: .22em;
   --gutter: 1rem;
   --header-h: 76px;
+  --shingle-drop: 0px; /* how far the mobile logo sign hangs below the bar */
   --ease: cubic-bezier(.2,.7,.2,1);
 }
 @media (min-width: 640px)  { :root { --gutter: 1.5rem; } }
@@ -34,7 +35,7 @@
 /* ─── Reset ─── */
 *, *::before, *::after { box-sizing: border-box; }
 html, body { overflow-x: clip; }
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 1rem); } /* in-page links land below the sticky header */
 body {
   margin: 0;
   font-family: var(--font-display);
@@ -116,7 +117,7 @@ a { color: inherit; }
 
 /* ─── Header ─── */
 .site-header {
-  position: relative; z-index: 20;
+  position: sticky; top: 0; z-index: 20; /* always visible */
   display: flex; align-items: center; justify-content: space-between;
   height: var(--header-h);
   padding: 0 var(--gutter);
@@ -144,25 +145,23 @@ a { color: inherit; }
 }
 .site-nav a:hover::after, .site-nav a:focus-visible::after { transform: scaleX(1); }
 .site-header__cta { display: none; }
-/* Hamburger: a cream paper tab (grain face, kraft backing) with hand-drawn bars that fold into an X.
-   No transform/z-index on the button itself so the z-index:-1 backing stays behind the face. */
+/* Hamburger: a framed MENU button echoing the logo sign's inset hairline frame, so the two ends
+   of the bar read as a pair. Label comes from CSS (MENU / CLOSE); screen readers use aria-label. */
 .site-header__toggle {
   position: relative;
-  width: 44px; height: 44px; padding: 0;
-  display: grid; place-items: center;
-  color: var(--color-dark); cursor: pointer;
-  border: 0;
-  background: var(--grain-dark) var(--color-cream);
-  box-shadow: 0 1px 1px rgba(24,23,17,.3);
+  display: flex; align-items: center; gap: 10px;
+  height: 40px; padding: 0 12px;
+  color: var(--color-cream); cursor: pointer;
+  background: none;
+  border: 1px solid rgba(239, 237, 231, .32);
+  font: 500 .6875rem/1 var(--font-sans); letter-spacing: var(--track-wide); text-transform: uppercase;
+  transition: border-color .3s ease, background-color .3s ease;
 }
-.site-header__toggle::after {
-  content: ''; position: absolute; inset: 0; z-index: -1;
-  background: var(--grain-dark) var(--color-stone);
-  transform: translate(3px, 4px) rotate(2.5deg);
-  transition: transform .4s var(--ease);
-}
-.site-header__toggle:hover::after { transform: translate(4px, 5px) rotate(3.5deg); }
-.nav-open .site-header__toggle::after { transform: translate(-3px, 4px) rotate(-3deg); }
+.site-header__toggle::before { content: 'Menu'; min-width: 3.7em; text-align: right; }
+.nav-open .site-header__toggle::before { content: 'Close'; }
+.site-header__toggle::after { content: ''; position: absolute; inset: -4px; } /* 48px-tall tap target */
+.site-header__toggle:hover { border-color: rgba(239, 237, 231, .6); background-color: rgba(239, 237, 231, .06); }
+.site-header__toggle:active { background-color: rgba(239, 237, 231, .12); }
 .site-header__toggle-bars { display: grid; gap: 5px; width: 20px; }
 .site-header__toggle-bars > span {
   display: block; height: 1.6px; border-radius: 1px; background: currentColor; justify-self: start;
@@ -176,6 +175,33 @@ a { color: inherit; }
 .nav-open .site-header__toggle-bars > span:nth-child(2) { opacity: 0; transform: scaleX(0); }
 .nav-open .site-header__toggle-bars > span:nth-child(3) { width: 21px; transform: translateY(-6.6px) rotate(-46deg); }
 .site-header__toggle:focus-visible { outline-color: var(--color-cream); outline-offset: 5px; }
+/* Mobile header: a slim bar with the logo on a hanging sign board (a builder's shingle),
+   so the stacked logo gets room without making the whole bar tall. */
+@media (max-width: 959px) {
+  :root { --header-h: 56px; --shingle-drop: 26px; }
+  .site-header { box-shadow: none; clip-path: none; } /* full-bleed trick not needed below 960px, and it would clip the sign */
+  .site-header__logo {
+    position: absolute; left: var(--gutter); top: 0; z-index: 1;
+    padding: 10px 14px 12px;
+    background: var(--grain-light) var(--color-olive);
+    box-shadow: 0 10px 16px -8px rgba(24, 23, 17, .45);
+  }
+  .site-header__logo::after {
+    content: ''; position: absolute; inset: 5px; pointer-events: none;
+    border: 1px solid rgba(239, 237, 231, .22);
+  }
+  .site-header__logo img { height: 60px; }
+  .site-header__toggle { margin-left: auto; }
+  main { padding-top: var(--shingle-drop); }
+  /* once scrolled, the sign tucks up into the bar (transform only) so it never covers content */
+  .site-header { transition: box-shadow .3s ease; }
+  .site-header__logo { transform-origin: 0 0; transition: transform .35s var(--ease), box-shadow .35s var(--ease); }
+  .is-scrolled .site-header { box-shadow: 0 6px 14px -10px rgba(24, 23, 17, .55); }
+  .is-scrolled .site-header__logo { transform: translateY(3px) scale(.62); box-shadow: none; }
+}
+@media (max-width: 959px) and (prefers-reduced-motion: reduce) {
+  .site-header, .site-header__logo { transition: none; }
+}
 @media (min-width: 960px) {
   .site-nav { display: block; margin-left: auto; margin-right: 2.75rem; }
   .site-header__cta { display: inline-flex; }
@@ -192,7 +218,7 @@ a { color: inherit; }
   height: 100dvh; /* dynamic viewport: excludes the mobile browser's URL bar */
   display: none;
   overflow-y: auto; overscroll-behavior: contain;
-  padding: calc(var(--header-h) + 1rem) var(--gutter) calc(.75rem + env(safe-area-inset-bottom));
+  padding: calc(var(--header-h) + var(--shingle-drop) + 1rem) var(--gutter) calc(.75rem + env(safe-area-inset-bottom));
   color: var(--color-cream);
   background: var(--grain-light) var(--color-olive);
   clip-path: inset(0 0 100% 0);
@@ -281,7 +307,7 @@ a { color: inherit; }
 @media (max-width: 359px) { .mobile-nav__svc { max-width: calc(3 * 5.5rem + 2 * .6rem); column-gap: .6rem; } }
 /* Short phones (e.g. iPhone SE with Safari bars): compact everything so the menu still fits above the URL bar */
 @media (max-height: 600px) {
-  .mobile-nav { padding-top: calc(var(--header-h) + .75rem); }
+  .mobile-nav { padding-top: calc(var(--header-h) + var(--shingle-drop) + .75rem); }
   .mobile-nav__inner { gap: .8rem; }
   .mobile-nav__primary { gap: .4rem; }
   .mobile-nav__primary a { padding: .5rem 1.2rem .55rem; }

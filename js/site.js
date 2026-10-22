@@ -66,6 +66,20 @@
   desktop.addEventListener('change', (e) => { if (e.matches) close(true); });
 })();
 
+(function headerScrollState() {
+  // .is-scrolled on <html> condenses the mobile header's hanging sign once the page moves
+  const root = document.documentElement;
+  let ticking = false;
+  const update = () => {
+    root.classList.toggle('is-scrolled', window.scrollY > 24);
+    ticking = false;
+  };
+  window.addEventListener('scroll', () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  update();
+})();
+
 (function setYear() {
   const el = document.getElementById('year');
   if (el) el.textContent = new Date().getFullYear();
