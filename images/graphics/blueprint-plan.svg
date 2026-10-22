@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 480 480" fill="none" stroke="#336147" stroke-linecap="square">
+  <!-- seamless tile: a small floor plan on a drafting grid -->
+  <path stroke-width=".5" opacity=".55" d="M0 0V480M48 0V480M96 0V480M144 0V480M192 0V480M240 0V480M288 0V480M336 0V480M384 0V480M432 0V480M0 0H480M0 48H480M0 96H480M0 144H480M0 192H480M0 240H480M0 288H480M0 336H480M0 384H480M0 432H480"/>
+
+  <!-- exterior walls, with window openings -->
+  <path stroke-width="4" d="M48 48H96M168 48H312M384 48H432V156M432 228V408H48V300M48 228V48"/>
+  <!-- windows: double sill lines across each opening -->
+  <path stroke-width="1" d="M96 45H168M96 51H168M312 45H384M312 51H384M429 156V228M435 156V228M45 228V300M51 228V300"/>
+
+  <!-- interior walls, with door openings -->
+  <path stroke-width="2.5" d="M48 216H120M156 216H320M356 216H432M264 48V140M264 176V216M192 216V300M192 336V408"/>
+
+  <!-- door leaves and swings -->
+  <path stroke-width="1" d="M120 216V180M120 180A36 36 0 0 1 156 216M320 216V180M320 180A36 36 0 0 1 356 216M264 140H228M228 140A36 36 0 0 0 264 176M192 300H228M228 300A36 36 0 0 1 192 336"/>
+  <!-- entry door on the front wall -->
+  <path stroke-width="1" d="M300 408H340"/>
+
+  <!-- stair run -->
+  <path stroke-width="1" d="M300 252H396V384H300ZM300 264H396M300 276H396M300 288H396M300 300H396M300 312H396M300 324H396M300 336H396M300 348H396M300 360H396M300 372H396M348 252V384"/>
+
+  <!-- kitchen counter + island -->
+  <path stroke-width="1" d="M60 228H180M60 252H180M180 228V252M84 276H156V300H84Z"/>
+
+  <!-- dimension lines with ticks -->
+  <path stroke-width=".75" d="M48 444H432M48 438V450M240 438V450M432 438V450M24 48V408M18 48H30M18 216H30M18 408H30M456 48V216M450 48H462M450 216H462"/>
+</svg>

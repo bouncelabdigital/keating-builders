@@ -17,6 +17,7 @@
   --color-stone:      #a7a284;
   --color-rule:       #c8c5ad;
   --color-scrap:      #e9e5da; /* base tone of the fibrous collage paper */
+  --color-tan:        #e8dfcc; /* homepage preloader drafting paper */
 
   --font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
   --font-sans:    'Inter', system-ui, -apple-system, sans-serif;
@@ -183,7 +184,7 @@ a { color: inherit; }
 
 /* Mobile menu: full-screen olive sheet under a pinned header.
    Fully display:none while closed (iOS Safari translucent-chrome rule); JS handles display + timing. */
-.nav-lock { overflow: hidden; }
+.nav-lock { overflow: hidden; padding-top: var(--header-h); } /* holds the pinned header's space: no content jump on open/close */
 .nav-lock .site-header { position: fixed; top: 0; left: 0; right: 0; }
 .mobile-nav {
   position: fixed; inset: 0 0 auto 0; z-index: 15;
